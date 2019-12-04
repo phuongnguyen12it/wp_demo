@@ -5,13 +5,13 @@ services:
   wordpress:
     container_name: wp
     depends_on:
-     - db
+     - mysql
     image: wordpress
     restart: always
     ports:
       - 8080:80
     environment:
-      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_USER: exampleuser
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: exampledb
@@ -19,12 +19,14 @@ services:
       - ./src:/var/www/html
       - ./src/wp-content:/var/www/html/wp-content
 
-  db:
-    container_name: db
+  mysql:
+    container_name: mysql
     image: mysql:5.7
     restart: always
     volumes:
       - dbdata:/var/lib/mysql
+    ports:
+      - 3306:33060
     environment:
       MYSQL_DATABASE: exampledb
       MYSQL_USER: exampleuser
